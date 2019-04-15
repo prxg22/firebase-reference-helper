@@ -1,7 +1,7 @@
 version: 2
 
 defaults: &defaults
-  working_directory: ~/firebase-reference-he l
+  working_directory: ~/repo
   docker:
     - image: circleci/node:8.9.1
 
@@ -27,7 +27,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - persist_to_workspace:
-          root: ~/firebase-reference-helper
+          root: ~/repo
           paths: .
 
 workflows:
