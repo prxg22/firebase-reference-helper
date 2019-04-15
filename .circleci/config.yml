@@ -1,7 +1,3 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
 jobs:
   build:
@@ -9,49 +5,35 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:latest
 
-    working_directory: ~/firebase-reference-helper
+defaults: &defaults
+  working_directory: ~/firebase-reference-helper
+  docker:
+    - image: circleci/node:8.9.1
 
     steps:
       - checkout
 
-      # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
 
-      - run: yarn install
+      - run: npm install
+      - run:
+          name: Run tests
+          command: npm test
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # run tests!
-      - run: yarn test
-  publish:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:latest
+      - persist_to_workspace:
+          root: ~/firebase-reference-helper
+          paths: .
 
-    working_directory: ~/firebase-reference-helper
-
-    steps:
-      - checkout
-
-    # Download and cache dependencies
-    - restore_cache:
-        keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-    - run: yarn install
-
-    - save_cache:
-        paths:
-          - node_modules
-        key: v1-dependencies-{{ checksum "package.json" }}
-
-    - run: yarn deploy
+workflows:
+  version: 2
+  only_test:
+    jobs:
+      - test
