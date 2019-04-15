@@ -1,15 +1,13 @@
 version: 2
-jobs:
-  build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:latest
 
 defaults: &defaults
-  working_directory: ~/firebase-reference-helper
+  working_directory: ~/firebase-reference-he l
   docker:
     - image: circleci/node:8.9.1
 
+jobs:
+  test:
+    <<: *defaults
     steps:
       - checkout
 
