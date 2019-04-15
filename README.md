@@ -1,7 +1,6 @@
 # firebase-reference-helper
-
+![CircleCI branch](https://img.shields.io/circleci/project/github/prxg22/firebase-reference-helper/master.svg)
 ## Instalation and Usage
-----
 ### Quick Start
 ```bash
 $ npm install firebase-reference-helper
